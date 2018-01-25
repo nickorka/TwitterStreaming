@@ -10,9 +10,7 @@ import org.apache.spark.streaming.twitter._
 
 // case class to flatten tweet info
 case class Tweet(user: String, tweet: String)
-
 case class Metrics(friendsCount: Int, followersCount: Int, location: List[String], lang: List[String])
-
 case class User(name: String, metrics: Metrics)
 
 object TwitterStreaming {
@@ -31,7 +29,7 @@ object TwitterStreaming {
 
   def main(args: Array[String]) {
 
-    // Configure Twitter credentials using twitter.txt
+    // Configure Twitter credentials using twitter.conf
     setupTwitter()
 
     val sparkConf = new SparkConf().setAppName("TweetStreaming")
