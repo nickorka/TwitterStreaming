@@ -68,7 +68,7 @@ object TwitterStreaming {
 
     // map stream data to particular object stream
     val tweets = stream
-      .filter(status => status.getUser.getLang.contains("ru"))  // filter Russian tweets only
+      .filter(status => status.getUser.getLang.contains("en")) // filter English tweets only
       .map(status => Tweet(status.getUser.getName, status.getText.replace("\n", " ")))
     // print tweets from current stream batch
     tweets.print()
@@ -81,13 +81,13 @@ object TwitterStreaming {
       // use spark sql to retrieve records
       // place to implement ETL logic for transformation
       rdd.toDF().createOrReplaceTempView("tweets")
-      //      spark.sql("select * from tweets").write.csv(s"tweets_${time.toString()}")
+      spark.sql("select * from tweets").write.csv(s"tweets_${time.toString()}")
     }
 
     // create 10 seconds windowed stream
     val tweets10s = tweets.window(Seconds(10), Seconds(10))
     // persist 10 seconds batches
-    //    tweets10s.saveAsTextFiles("tweets10s")
+    tweets10s.saveAsTextFiles("tweets10s")
 
     ssc.start()
     ssc.awaitTermination()
